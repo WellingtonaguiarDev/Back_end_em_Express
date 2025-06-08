@@ -1,8 +1,7 @@
-// index.js
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
+const serverless = require('serverless-http'); 
 const moradorRoutes = require('./routes/moradorRoutes');
 const visitanteRoutes = require('./routes/visitanteRoutes');
 const enderecoRoutes = require('./routes/enderecoRoutes');
@@ -10,7 +9,6 @@ const veiculoRoutes = require('./routes/veiculoRoutes');
 const aluguelRoutes = require('./routes/aluguelRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(cors());
@@ -28,9 +26,5 @@ app.get('/', (req, res) => {
   res.send('API de Condomínios rodando!');
 });
 
-// Iniciar servidor (no Vercel, essa parte não é necessária, mas funciona localmente)
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-module.exports = app; // necessário para o Vercel funcionar
+module.exports = app;
+module.exports.handler = serverless(app); 
